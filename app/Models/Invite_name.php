@@ -12,15 +12,25 @@ class Invite_name extends Model {
     *
     * @var string
     */
-    protected $table = 'Invite_name';
+    protected $table = 'invite_name';
     protected $primaryKey = 'id_invite_name';
     public $timestamps = false;
-    protected $fillable = ['id_invite_name', 'id_rapat', 'disposisi_rapat'];
+    protected $fillable = ['id_invite_name', 'id_rapat', 'disposisi_rapat','status_jabatan'];
 
-     public static function getInvite($id_rapat){
-      	$query = " select * from Invite_name 
-					where Invite_name.id_rapat =".$id_rapat." ";
-            
+     public static function getInviteUndang($id_rapat){
+         $undang = 3;
+      	$query = " select * from invite_name
+					where invite_name.id_rapat = ".$id_rapat." AND status_jabatan=".$undang." ";
+		  $listData = \DB::select($query);
+      	 return $listData;
+
+
+      }
+     public static function getInviteInfant($id_rapat){
+         $infant =2;
+      	$query = " select * from invite_name
+					where invite_name.id_rapat = ".$id_rapat." AND status_jabatan=".$infant." ";
+
 
 		  $listData = \DB::select($query);
       	 return $listData;

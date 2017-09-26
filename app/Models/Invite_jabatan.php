@@ -12,10 +12,10 @@ class Invite_jabatan extends Model {
     *
     * @var string
     */
-    protected $table = 'Invite_jabatan';
+    protected $table = 'invite_jabatan';
     protected $primaryKey = 'id_invite_jabatan';
     public $timestamps = false;
     protected $fillable = ['id_invite_jabatan', 'id_jabatan', 'id_rapat'];
 
-    
+
 }

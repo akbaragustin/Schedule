@@ -17,7 +17,7 @@ class Users extends Model {
 
      public static function getAll()
     {
-      
+
         $input = Input::get('search.value');
         $get = Input::all();
         $where = "";
@@ -52,19 +52,22 @@ class Users extends Model {
         // limit 10 OFFSET 1
         $start = Input::get('start');
         $length = Input::get('length');
+        $limit ="";
+        if (!empty($start) AND !empty($length)) {
         $limit  = "LIMIT ".$length." OFFSET ".$start;
-        $query = " select users.id_user,users.username,users.email,jabatan.name_jabatan from users 
+        }
+        $query = " select users.id_user,users.username,users.email,jabatan.name_jabatan from users
                     LEFT JOIN jabatan ON jabatan.id_jabatan  = users.id_jabatan
-                ".$where."
+                    WHERE users.username  IS NOT NULL
                 ".$limit."
                 ";
         $listData = \DB::select($query);
-      
+
         return $listData;
-    }  
+    }
       public static function getAllEselon()
     {
-      
+
         $input = Input::get('search.value');
         $get = Input::all();
         $where = "";
@@ -100,13 +103,13 @@ class Users extends Model {
         $start = Input::get('start');
         $length = Input::get('length');
         $limit  = "LIMIT ".$length." OFFSET ".$start;
-        $query = " select users.id_user,Users.name_pic,master_unit_kerja.name_unit_kerja from users 
+        $query = " select users.id_user,users.name_pic,master_unit_kerja.name_unit_kerja from users
                     LEFT JOIN master_unit_kerja ON master_unit_kerja.id_unit_kerja  = users.id_unit_kerja
-				    where name_pic IS NOT NULL 
+				    where name_pic IS NOT NULL
                 ".$limit."
                 ";
         $listData = \DB::select($query);
-      
+
         return $listData;
     }
     public static function getSearch($input)
@@ -114,16 +117,16 @@ class Users extends Model {
 
         $query ="Select username,id_user from users where username like '%".$input."%' ";
         $listData = \DB::select($query);
-        
+
         return $listData;
 
-    } 
+    }
     public static function getName_pic($input)
     {
 
         $query ="Select name_pic,id_user,id_unit_kerja from users where name_pic LIKE '%".$input."%' AND name_pic IS NOT NULL";
         $listData = \DB::select($query);
-        
+
         return $listData;
 
     }

@@ -1,245 +1,268 @@
-	@extends('layouts.indexFrontend')
-	@section('content')
-		<div class="main-content">
-			<div class="main-content-inner">
-				
-						<div class="nav-search" id="nav-search">
-							<form class="form-search">
-								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-									<i class="ace-icon fa fa-search nav-search-icon"></i>
-								</span>
-							</form>
-						</div><!-- /.nav-search -->
-					</div>
+@extends('layouts.indexFrontend')
+@section('content')
+@section('header')
+	<link rel="stylesheet" href="{{ URL::asset('') }}assets/headerFe/demo.css">
+	<link rel="stylesheet" href="{{ URL::asset('') }}assets/headerFe/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+@endsection
+</head>
+<body style="background-color:#fff">
 
-						<div class="page-header">
-							<center><h1>
-								Jadwal Puskim PU
-								
-							</h1></center>
-						</div><!-- /.page-header -->
+<header class="header-basic-light">
 
-						<div class="row">
-							<div class="col-xs-12">
-								<!-- PAGE CONTENT BEGINS -->
-								<div class="row">
-									<div class="col-sm-12">
-										<div class="space"></div>
+	<div class="header-limiter">
 
-										<div id="calendar"></div>
-									</div>
-								</div>
+		<h1><a href="#">Puskim<span>PU</span></a></h1>
 
-								<!-- PAGE CONTENT ENDS -->
-							</div><!-- /.col -->
-						</div><!-- /.row -->
-					</div><!-- /.page-content -->
-				</div>
-			</div><!-- /.main-content -->
-	@section('js')
-			<!-- inline scripts related to this page -->
-		<script type="text/javascript">
-			jQuery(function($) {
+		<nav>
+			<a href="{{url(route('frontend'))}}" class="selected">Internal</a>
+			<a href="{{url(route('ruanganFe'))}}">Jadwal Ruangan</a>
+			<a href="{{url(route('eselon_kapus'))}}">Eselon & Kapus</a>
+		</nav>
+	</div>
 
-/* initialize the external events
-	-----------------------------------------------------------------*/
+</header>
+<div class="row" style="padding-right:18px;padding-left:18px">
+<div class="col-xs-12">
+	<div class="pull-right" style="padding-right:20px;padding-top:15px">
+		<a href="#">
+		 <button type="button" class="btn btn-info waves-effect edit-menu filterModal ">Filter</button>
+		</a>
+	</div>
+	<h3 class="header smaller lighter blue">Rapat Internal</h3>
 
-	$('#external-events div.external-event').each(function() {
+<table class="table table-bordered table-striped table-hover js-basic-example dataTable listTable">
+	<thead>
+		<tr>
+			<th>Hari & Tanggal</th>
+			<th>Waktu</th>
+			<th>Agenda</th>
+			<th>Pelaksana</th>
+			<th>Tempat</th>
+			<th>Pejabat</th>
+			<th>Infant</th>
+		</tr>
+	</thead>
 
-		// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-		// it doesn't need to have a start or end
-		var eventObject = {
-			title: $.trim($(this).text()) // use the element's text as the event title
-		};
+</table>
 
-		// store the Event Object in the DOM element so we can get to it later
-		$(this).data('eventObject', eventObject);
+	</div>
+</div>
+<!-- Modal -->
+ <div class="modal fade" id="filter" role="dialog">
+   <div class="modal-dialog">
 
-		// make the event draggable using jQuery UI
-		$(this).draggable({
-			zIndex: 999,
-			revert: true,      // will cause the event to go back to its
-			revertDuration: 0  //  original position after the drag
-		});
-		
-	});
+	 <!-- Modal content-->
+	 <div class="modal-content">
+	   <div class="modal-header">
+		 <button type="button" class="close" data-dismiss="modal">&times;</button>
+		 <h4 class="modal-title">Modal Header</h4>
+	   </div>
+	   <div class="modal-body">
+		   <form class="form-horizontal" role="form" method="POST" action="{{url(route('kapus.save'))}}">
+   			<div class="form-group">
+   				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agenda </label>
 
+   				<div class="col-sm-9">
+   					<input type="text" id="form-field-1" placeholder="Aganda" class="col-xs-10 col-sm-5 agenda_rapat" name="agenda_rapat" value="{{!empty($agenda_rapat) ? $agenda_rapat : ''}}" />
+   				</div>
+   			</div>
+   			<div class="form-group">
+   				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> PIC/Pelaksana </label>
 
+   				<div class="col-sm-9">
+   					<input type="text" id="form-field-1" placeholder="Pelaksana" class="col-xs-10 col-sm-5 pj_rapat" name="pj_rapat" value="{{!empty($pj_rapat) ? $pj_rapat : ''}}" />
+   				</div>
+   			</div>
 
+   				<div class="form-group">
+   				<label class="col-sm-3 control-label no-padding-right" for="form-field-1" id ="start_data">Waktu Mulai</label>
 
-	/* initialize the calendar
-	-----------------------------------------------------------------*/
+   				<div class="col-sm-9">
+   					<input type="text" id="form-field-1" placeholder="waktu Mulai" class="col-xs-10 col-sm-5 datepicker" name="start_tgl_rapat" value="" />
+   				</div>
+   			</div>
+   			<div class="form-group">
+   				<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Waktu Akhir</label>
 
-	var date = new Date();
-	var d = date.getDate();
-	var m = date.getMonth();
-	var y = date.getFullYear();
-	var Url = "{{url(route('frontend.indexAjax'))}}";
-	var token = "{{ csrf_token() }}";
-	var calendar = $('#calendar').fullCalendar({
-		//isRTL: true,
-		//firstDay: 1,// >> change first day of week 
-		
-		buttonHtml: {
-			prev: '<i class="ace-icon fa fa-chevron-left"></i>',
-			next: '<i class="ace-icon fa fa-chevron-right"></i>'
-		},
-	
-		header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
-		},
-		events: function(start, end, timezone, callback) {
-	        jQuery.ajax({
-	            url: Url,
-	            type: 'POST',
-	            dataType: 'json',
-	            data: {
-	                start: start.format(),
-	                end: end.format(),
-	                _token : token
-	            },
-	            success: function(doc) {
+   				<div class="col-sm-9">
+   					<input type="text" id="form-field-1" placeholder="Waktu Akhir" class="col-xs-10 col-sm-5 datepicker1" name="end_tgl_rapat" value="" />
+   				</div>
+   			</div>
+	   </div>
+	   <div class="modal-footer">
+		   <button class="btn btn-info ajaxSearch" type="button">
+			   <i class="ace-icon fa fa-check bigger-110"></i>
+			   Search
+		   </button>
+		 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	   </div>
+	 </div>
 
-	               var events = [];
-	                if(!!doc.allData){
-	                    $.map( doc.allData, function( r ) {
-	                        events.push({
-	                            id: r.id_rapat,
-	                            title: r.agenda_rapat,
-	                            start: r.start_tgl_rapat,
-	                            end: r.end_date_end
-	                        });
-	                    });
-	                }
-	                 callback(events);
-	            }
-	        });
-		  },
-		 
-		
-		/**eventResize: function(event, delta, revertFunc) {
+   </div>
+ </div>
+	<div class="viewShow hidden">
 
-			alert(event.title + " end is now " + event.end.format());
+	</div>
+</body>
+</html>
+<style>
+	.daterangepicker{
+		z-index: 10000;
+	}
+	.header-basic-light {
+		box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.15);
+	}
+	.header{
+		border-bottom: none;
+	}
+	html{
+		background-color:#fff;
+	}
+</style>
+@section('js')
+<script type="text/javascript">
+var urlAjaxTable = "{{ URL::to(route('frontend.indexAjax')) }}";
+var  urlAjaxShow = "{{URL::to(route('frontend.showAjax'))}}";
+var token = "{{ csrf_token() }}";
+var listTable = $('.listTable').DataTable( {
+	"processing": true,
+	"bFilter": false,
+	"bInfo": false,
+	"bLengthChange": false,
+	"serverSide": true,
+	"ajax": {
+		 "url": urlAjaxTable,
+		 "type": "GET"
+	 },
+	 "columns": [
+		{ "data": "start_tgl_rapat" },
+		{ "data": "waktu" },
+		{ "data": "agenda_rapat" },
+		{ "data": "pj_rapat" },
+		{ "data": "tempat_rapat"  },
+		{ "data": "pejabat"  },
+		{ "data": "infant"  },
+	],
+	"buttons": [
+	   {
+		   extend: 'collection',
+		   text: 'Export',
+		   buttons: [
+			   'copy',
+			   'excel',
+			   'csv',
+			   'pdf',
 
-			if (!confirm("is this okay?")) {
-				revertFunc();
-			}
+		   ]
+	   }
+   ]
+});
 
-		},*/
-		
-		editable: true,
-		droppable: true, // this allows things to be dropped onto the calendar !!!
-		drop: function(date) { // this function is called when something is dropped
-		
-			// retrieve the dropped element's stored Event Object
-			var originalEventObject = $(this).data('eventObject');
-			var $extraEventClass = $(this).attr('data-class');
-			
-			
-			// we need to copy it, so that multiple events don't have a reference to the same object
-			var copiedEventObject = $.extend({}, originalEventObject);
-			
-			// assign it the date that was reported
-			copiedEventObject.start = date;
-			copiedEventObject.allDay = false;
-			if($extraEventClass) copiedEventObject['className'] = [$extraEventClass];
-			
-			// render the event on the calendar
-			// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-			$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-			
-			// is the "remove after drop" checkbox checked?
-			if ($('#drop-remove').is(':checked')) {
-				// if so, remove the element from the "Draggable Events" list
-				$(this).remove();
-			}
-			
-		}
-		,
-		selectable: true,
-		selectHelper: true,
-		select: function(start, end, allDay) {
-			
-			bootbox.prompt("New Event Title:", function(title) {
-				if (title !== null) {
-					calendar.fullCalendar('renderEvent',
-						{
-							title: title,
-							start: start,
-							end: end,
-							allDay: allDay,
-							className: 'label-info'
-						},
-						true // make the event "stick"
-					);
-				}
-			});
-			
-
-			calendar.fullCalendar('unselect');
-		}
-		,
-		eventClick: function(calEvent, jsEvent, view) {
-
-			//display a modal
-			var modal = 
-			'<div class="modal fade">\
-			  <div class="modal-dialog">\
-			   <div class="modal-content">\
-				 <div class="modal-body">\
-				   <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
-				   <form class="no-margin">\
-					  <label>Change event name &nbsp;</label>\
-					  <input class="middle" autocomplete="off" type="text" value="' + calEvent.title + '" />\
-					 <button type="submit" class="btn btn-sm btn-success"><i class="ace-icon fa fa-check"></i> Save</button>\
-				   </form>\
-				 </div>\
-				 <div class="modal-footer">\
-					<button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i> Delete Event</button>\
-					<button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
-				 </div>\
-			  </div>\
-			 </div>\
-			</div>';
-		
-		
-			var modal = $(modal).appendTo('body');
-			modal.find('form').on('submit', function(ev){
-				ev.preventDefault();
-
-				calEvent.title = $(this).find("input[type=text]").val();
-				calendar.fullCalendar('updateEvent', calEvent);
-				modal.modal("hide");
-			});
-			modal.find('button[data-action=delete]').on('click', function() {
-				calendar.fullCalendar('removeEvents' , function(ev){
-					return (ev._id == calEvent._id);
+function showProcess(id_rapat){
+		jQuery.ajax({
+			url: urlAjaxShow,
+			type: 'GET',
+			dataType: 'json',
+			data: {
+					id : id_rapat,
+				_token : token
+			},
+			 success: function(doc) {
+			 	$('.row').addClass("hidden");
+				$('.viewShow').html(doc.data);
+				$('.viewShow').removeClass('hidden');
+				$('.closeRuangan').click(function(){
+					$('.row').removeClass("hidden");
+					$('.viewShow').addClass('hidden');
 				})
-				modal.modal("hide");
-			});
-			
-			modal.modal('show').on('hidden', function(){
-				modal.remove();
-			});
 
-
-			//console.log(calEvent.id);
-			//console.log(jsEvent);
-			//console.log(view);
-
-			// change the border color just for fun
-			//$(this).css('border-color', 'red');
-
-		}
-		
+			 }
 	});
+}
+$('.datepicker').daterangepicker({
+			locale :{
+				format : 'DD-MM-YYYY HH:mm A'
+			},
+			timePicker :true,
+			singleDatePicker :true,
+			showDrodowns :true,
+			ampm: true,
+
+});
+$('.datepicker1').daterangepicker({
+			locale :{
+				format : 'DD-MM-YYYY HH:mm A'
+			},
+			timePicker :true,
+			singleDatePicker :true,
+			showDrodowns :true,
+			ampm: true,
+
+});
+$('.ajaxSearch').click(function () {
 
 
-})
-		</script>
-	@endsection
+	var waktuM = $('.datepicker').val();
+	var waktuA = $('.datepicker1').val();
+	if (waktuM != '' && waktuA == '') {
+		swal("GAGAL!!",'Waktu Akhir harap Di isi!')
+		return false;
+	}
+	if (waktuM == '' && waktuA != '') {
+		swal("GAGAL!!",'Waktu Mulai harap Di isi!')
+		return false;
+	}
+	$('#filter').modal('hide');
+	var agenda_rapat = $('.agenda_rapat').val();
+	var pj_rapat = $('.pj_rapat').val();
+	$('.listTable').DataTable( {
+	"processing": true,
+	"bFilter": false,
+	"bInfo": false,
+	"bLengthChange": false,
+	"serverSide": true,
+	"ajax": {
+		 "url": urlAjaxTable,
+		 "type": "GET",
+		 "data" : {
+			 waktuM : waktuM,
+			 waktuA : waktuA,
+			 agenda_rapat : agenda_rapat,
+			 pj_rapat : pj_rapat
+		 }
+	 },
+	 "columns": [
+		{ "data": "start_tgl_rapat" },
+		{ "data": "waktu" },
+		{ "data": "agenda_rapat" },
+		{ "data": "pj_rapat" },
+		{ "data": "tempat_rapat"  },
+		{ "data": "pejabat"  },
+		{ "data": "infant"  },
+	],
+	"buttons": [
+	   {
+		   extend: 'collection',
+		   text: 'Export',
+		   buttons: [
+			   'copy',
+			   'excel',
+			   'csv',
+			   'pdf',
 
+		   ]
+	   }
+   ],
+	     "destroy" : true
+	});
+});
+$('.filterModal').click(function(){
+	$('.datepicker').val("");
+	$('.datepicker1').val("");
+	 $('#filter').modal('show');
+
+});
+</script>
+@endsection
 @stop

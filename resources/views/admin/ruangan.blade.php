@@ -18,9 +18,9 @@
 								@if(!empty($id_ruangan))
 								<form class="form-horizontal" role="form" method="POST" action="{{url(route('ruangan.update'))}}">@else
 								<form class="form-horizontal" role="form" method="POST" action="{{url(route('ruangan.save'))}}">
-								@endif	
+								@endif
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama ruangan </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Ruangan </label>
 
 										<div class="col-sm-9">
 											<input type="text" id="form-field-1" placeholder="Ruangan" class="col-xs-10 col-sm-5" name="name_ruangan" value="{{!empty($name_ruangan) ? $name_ruangan : ''}}" />
@@ -58,17 +58,17 @@
 											</button>
 										</div>
 									</div>
-							
+
 								</form>
 
-					
+
 						<div class="row">
 									<div class="col-xs-12">
 										<h3 class="header smaller lighter blue">Data Ruangan</h3>
 
 										<div class="clearfix">
 											<div class="pull-right tableTools-container"></div>
-										</div>				
+										</div>
 		                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable listTable">
 		                        <thead>
 		                            <tr>
@@ -85,14 +85,14 @@
 					</div>
 				</div>
 			</div><!-- /.row -->
-		</div><!-- /.page-content -->	
+		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	@section('js')
 		<script>
 	var urlAjaxTable = "{{ URL::to(route('ruangan.indexAjax')) }}";
     var  urlEdit = "{{url('/admin/ruangan-edit')}}";
     var  urlDelete = "{{url('/admin/ruangan-delete')}}";
-    
+
     var listTable = $('.listTable').DataTable( {
         "processing": false,
         "bFilter": false,
@@ -104,12 +104,12 @@
              "type": "GET"
          },
          "columns": [
-            { "data": "name_ruangan" },    
-            { "data": "max_ruangan" },    
-            { "data": "creator" },    
+            { "data": "name_ruangan" },
+            { "data": "max_ruangan" },
+            { "data": "creator" },
             { "data": "created" },
             { "render": function (data, type, row, meta) {
-                    
+
                         var edit = $('<a><button>')
                                     .attr('class', "btn bg-blue-grey waves-effect edit-menu")
                                     .attr('href',urlEdit+'/'+row.id_ruangan)
@@ -138,7 +138,7 @@
                    'excel',
                    'csv',
                    'pdf',
-              
+
                ]
            }
        ]

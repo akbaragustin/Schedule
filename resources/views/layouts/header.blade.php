@@ -40,10 +40,10 @@
 		<script src="{{ URL::asset('') }}assets/js/ace-extra.min.js"></script>
 
  	    <link rel="stylesheet" href="{{ URL::asset('') }}plugins/swall/sweetalert.css">
- 	    
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('') }}plugins/fonts/fonts.googleapis.css" rel="stylesheet" type="text/css">
+    <link href="{{ URL::asset('') }}plugins/fonts/icon.css" rel="stylesheet" type="text/css">
 
 
 		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->

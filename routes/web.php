@@ -16,7 +16,16 @@ Route::get('/', function () {
 });
 	Route::get('/logout', ['uses' =>'loginController@logout','as'=>'logout']);
 	Route::get('/', ['uses' =>'frontendController@index','as'=>'frontend']);
-	Route::post('/frontend-ajax', ['uses' =>'frontendController@indexAjax','as'=>'frontend.indexAjax']);
+	Route::get('/ruangan', ['uses' =>'frontendController@indexRuangan','as'=>'ruanganFe']);
+	Route::get('/eselon-kapus', ['uses' =>'frontendController@indexEselonKapus','as'=>'eselon_kapus']);
+	Route::get('/kapusShow', ['uses' =>'frontendController@indexKapus','as'=>'kapusShow']);
+	Route::get('/frontend-ajax-ruangan', ['uses' =>'frontendController@indexAjaxRuangan','as'=>'frontend.indexAjaxRuangan']);
+	Route::get('/frontend-ajax-eselon', ['uses' =>'frontendController@indexAjaxEselon','as'=>'frontend.indexAjaxEselon']);
+	Route::get('/frontend-ajax-kapus', ['uses' =>'frontendController@indexAjaxKapus','as'=>'frontend.indexAjaxKapus']);
+	Route::get('/frontend-ajax', ['uses' =>'frontendController@indexAjax','as'=>'frontend.indexAjax']);
+    Route::get('/frontend-show', ['uses' =>'frontendController@showAjax','as'=>'frontend.showAjax']);
+    Route::get('/frontend-show-eselon', ['uses' =>'frontendController@showAjaxEselon','as'=>'frontend.showAjaxEselon']);
+    Route::get('/frontend-show-Kapus', ['uses' =>'frontendController@showAjaxKapus','as'=>'frontend.showAjaxKapus']);
 // GUEST
 Route::group(['middleware' => ['seller_guest']], function() {
 	Route::get('/login', ['uses' =>'loginController@login','as'=>'login.login']);
@@ -80,13 +89,13 @@ Route::group(['middleware' => ['seller_guest']], function() {
 		Route::get('/config/menu-edit/{id}', ['uses' =>'configController@menuEdit','as'=>'config.menuEdit']);
 		Route::get('/config/menu-delete/{id}', ['uses' =>'configController@menuDelete','as'=>'config.menuDelete']);
 		Route::get('/config/menu-viewIcon', ['uses' =>'configController@menuViewIcon','as'=>'config.menuViewIcon']);
-		
+
 		//CONFIG ROLE
 		Route::get('/config/role', ['uses' =>'configController@menuRole','as'=>'role.index']);
 		Route::get('/config/roleMenu', ['uses' =>'configController@reloadMenu','as'=>'config.reloadMenu']);
 		Route::get('/config/roleMenu', ['uses' =>'configController@reloadMenu','as'=>'config.reloadMenu']);
 		Route::post('/config/role-save', ['uses' =>'configController@roleSave','as'=>'config.roleSave']);
-		 
+
 		//Edit USERS
 		Route::get('/Editusers', ['uses' =>'usersController@editIndex','as'=>'Editusers.index']);
 		Route::post('/users-updateEdit', ['uses' =>'usersController@updateEdit','as'=>'users.updateEdit']);
@@ -100,7 +109,8 @@ Route::group(['middleware' => ['seller_guest']], function() {
 		Route::get('/eselon-delete/{id}', ['uses' =>'eselonController@delete','as'=>'eselon.delete']);
 		Route::get('/eselon-edit/{id}', ['uses' =>'eselonController@edit','as'=>'eselon.edit']);
 		Route::get('eselon-ajax-search', ['uses' =>'eselonController@searchAjax','as'=>'eselon.searchAjax']);
-			
+        Route::get('/eselon-show-ruangan', ['uses' =>'eselonController@showRuangan','as'=>'eselon.showRuangan']);
+
 		//KAPUS
 		Route::get('/kapus', ['uses' =>'kapusController@index','as'=>'kapus.index']);
 		Route::post('/kapus-save', ['uses' =>'kapusController@save','as'=>'kapus.save']);
@@ -109,7 +119,9 @@ Route::group(['middleware' => ['seller_guest']], function() {
 		Route::get('/kapus-show', ['uses' =>'kapusController@showAjax','as'=>'kapus.showAjax']);
 		Route::get('/kapus-delete/{id}', ['uses' =>'kapusController@delete','as'=>'kapus.delete']);
 		Route::get('/kapus-edit/{id}', ['uses' =>'kapusController@edit','as'=>'kapus.edit']);
-		
+		Route::get('/kapus-show-ruangan', ['uses' =>'kapusController@showRuangan','as'=>'kapus.showRuangan']);
+        Route::get('kapus-ajax-search', ['uses' =>'kapusController@searchAjax','as'=>'kapus.searchAjax']);
+
 		//RAPAT
 		Route::get('/rapat', ['uses' =>'rapatController@index','as'=>'rapat.index']);
 		Route::post('/rapat-save', ['uses' =>'rapatController@save','as'=>'rapat.save']);
@@ -117,8 +129,10 @@ Route::group(['middleware' => ['seller_guest']], function() {
 		Route::post('/rapat-update', ['uses' =>'rapatController@update','as'=>'rapat.update']);
 		Route::get('/rapat-show', ['uses' =>'rapatController@showAjax','as'=>'rapat.showAjax']);
 		Route::get('/rapat-delete/{id}', ['uses' =>'rapatController@delete','as'=>'rapat.delete']);
-		Route::get('/rapat-edit/{id}', ['uses' =>'rapatController@edit','as'=>'rapat.edit']);	
-		Route::get('/rapat-change-status/{id}', ['uses' =>'rapatController@updateStatus','as'=>'rapat.updateStatus']);	
+		Route::get('/rapat-edit/{id}', ['uses' =>'rapatController@edit','as'=>'rapat.edit']);
+		Route::get('/rapat-change-status', ['uses' =>'rapatController@updateStatus','as'=>'rapat.updateStatus']);
+        Route::get('/rapat-show-ruangan', ['uses' =>'rapatController@showRuangan','as'=>'rapat.showRuangan']);
+        Route::get('rapat-ajax-search', ['uses' =>'rapatController@searchAjax','as'=>'rapat.searchAjax']);
 
 //BOOK RAPAT INTERNAL
 		Route::get('/booking_internal', ['uses' =>'bookRapatController@index','as'=>'booking_internal.index']);
@@ -127,7 +141,9 @@ Route::group(['middleware' => ['seller_guest']], function() {
 		Route::post('/booking_internal-update', ['uses' =>'bookRapatController@update','as'=>'booking_internal.update']);
 		Route::get('/booking_internal-show', ['uses' =>'bookRapatController@showAjax','as'=>'booking_internal.showAjax']);
 		Route::get('/booking_internal-delete/{id}', ['uses' =>'bookRapatController@delete','as'=>'booking_internal.delete']);
-		Route::get('/booking_internal-edit/{id}', ['uses' =>'bookRapatController@edit','as'=>'booking_internal.edit']);	
+		Route::get('/booking_internal-edit/{id}', ['uses' =>'bookRapatController@edit','as'=>'booking_internal.edit']);
+        Route::get('/booking_internal-show-ruangan', ['uses' =>'bookRapatController@showRuangan','as'=>'booking_internal.showRuangan']);
+        Route::get('booking_internal-ajax-search', ['uses' =>'bookRapatController@searchAjax','as'=>'booking_internal.searchAjax']);
 
 
 

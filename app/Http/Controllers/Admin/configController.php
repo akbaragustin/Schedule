@@ -29,19 +29,19 @@ class configController extends Controller
     {
         $data['dataMenu'] = MA::all();
         return view("config.menu",$data);
-    }  
-    
+    }
+
     public function menuView()
     {
         $data['dataMenu'] = MA::all()->toArray();
-      
+
         return view("config.menuView");
     }
 
      public function menuViewIcon()
     {
         $data['dataMenu'] = MA::all()->toArray();
-      
+
         return view("config.menuViewIcon");
     }
 
@@ -81,25 +81,25 @@ class configController extends Controller
         }
     }
     public function menuEdit($id_menu){
-       
-        $update = MA::where('id_menu',$id_menu)->get()->toArray();
+
+        $update = MA::getAllEdit($id_menu);
         $data   = [];
          $data['dataMenu'] = MA::all();
         foreach ($update as $key => $value) {
                 $data['name_menu'] = $value['name_menu'];
                 $data['url_menu'] = $value['url_menu'];
                 $data['parent_menu'] = $value['parent_menu'];
+                $data['parent_name'] = $value['parent_name'];
                 $data['icon_menu'] = $value['icon_menu'];
                 $data['id_menu'] = $value['id_menu'];
-                
+
         }
-       
        return view('config.menu',$data);
     }
-    
+
 
     public function menuUpdate()
-    {    
+    {
 
         $rules=[
             'name_menu'=>'required',
@@ -116,7 +116,8 @@ class configController extends Controller
         ];
         $validator=Validator::make(Input::all(), $rules, $messages);
         if ($validator->passes()) {
-               $dataSession = \Session::get('auth');    
+            // print_R(Input::get('parent_menu'));die;
+               $dataSession = \Session::get('auth');
                 $data = MA::find(Input::get('update'));
                 $data->name_menu = Input::get('name_menu');
                 $data->url_menu = Input::get('url_menu');
@@ -130,17 +131,17 @@ class configController extends Controller
           } else {
             \Session::flash('insertError', 'Gagal Mengubah!');
            return \Redirect::to(route('menu.index'));
-          
-        }      
+
+        }
     }
     public function menuDelete($id_menu)
-    {    
+    {
         $jabatan = MA::find($id_menu);
        $jabatan->delete();
        \Session::flash('insertSuccess', 'SUCCSESS');
        return \Redirect::to(route('menu.index'));
 
-   
+
     }
 
     public function menuRole(){
@@ -152,7 +153,7 @@ class configController extends Controller
 
     }
      public function reloadMenu()
-    { 
+    {
         $data['allMenu'] = getMenu();
         $array =  MR::where('id_jabatan',Input::get('id'))->get()->toArray();
             $id_menu = [];
@@ -174,16 +175,16 @@ class configController extends Controller
     public function roleSave()
     {
         $data = Input::all();
-        $delete = MR::roleDelete($data['group_name']);   
+        $delete = MR::roleDelete($data['group_name']);
         if (!empty($data['id_menu'])) {
             foreach ($data['id_menu'] as $key => $value) {
                 $roleInsert = new MR;
                 $roleInsert->id_jabatan = $data['group_name'];
                 $roleInsert->id_menu = $value;
                 $roleInsert->save();
-            }   
+            }
         }
-            
+
        \Session::flash('insertSuccess', 'SUCCSESS');
          return \Redirect::to(route('role.index'));
     }

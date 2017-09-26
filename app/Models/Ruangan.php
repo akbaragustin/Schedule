@@ -53,14 +53,25 @@ class Ruangan extends Model {
         $start = Input::get('start');
         $length = Input::get('length');
         $limit  = "LIMIT ".$length." OFFSET ".$start;
-        $query = " select ruangan.id_ruangan,ruangan.name_ruangan,max_ruangan,ruangan.created,users.username from ruangan 
+        $query = " select ruangan.id_ruangan,ruangan.name_ruangan,max_ruangan,ruangan.created,users.username from ruangan
                     LEFT JOIN users ON id_user  = creator
 				".$where."
                 ".$limit."
                 ";
         $listData = \DB::select($query);
-      
 
+
+        return $listData;
+    }
+    public static function getAllRuangan(){
+        $start = Input::get('start');
+        $length = Input::get('length');
+        $limit  = "LIMIT ".$length." OFFSET ".$start;
+        $query = " select * from ruangan
+                ".$limit."
+                ";
+        $listData = \DB::select($query);
+        print_r($listData);die;
         return $listData;
     }
 }

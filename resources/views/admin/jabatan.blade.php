@@ -17,9 +17,9 @@
 								@if(!empty($id_jabatan))
 								<form class="form-horizontal" role="form" method="POST" action="{{url(route('jabatan.update'))}}">@else
 								<form class="form-horizontal" role="form" method="POST" action="{{url(route('jabatan.save'))}}">
-								@endif	
+								@endif
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama jabatan </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Jabatan </label>
 
 										<div class="col-sm-9">
 											<input type="text" id="form-field-1" placeholder="jabatan" class="col-xs-10 col-sm-5" name="name_jabatan" value="{{!empty($name_jabatan) ? $name_jabatan : ''}}" />
@@ -50,17 +50,17 @@
 											</button>
 										</div>
 									</div>
-							
+
 								</form>
 
-					
+
 						<div class="row">
 									<div class="col-xs-12">
 										<h3 class="header smaller lighter blue">Data Jabatan</h3>
 
 										<div class="clearfix">
 											<div class="pull-right tableTools-container"></div>
-										</div>				
+										</div>
 		                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable listTable">
 		                        <thead>
 		                            <tr>
@@ -76,14 +76,14 @@
 					</div>
 				</div>
 			</div><!-- /.row -->
-		</div><!-- /.page-content -->	
+		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	@section('js')
 		<script>
 	var urlAjaxTable = "{{ URL::to(route('jabatan.indexAjax')) }}";
     var  urlEdit = "{{url('/admin/jabatan-edit')}}";
     var  urlDelete = "{{url('/admin/jabatan-delete')}}";
-    
+
     var listTable = $('.listTable').DataTable( {
         "processing": false,
         "bFilter": false,
@@ -95,8 +95,8 @@
              "type": "GET"
          },
          "columns": [
-            { "data": "name_jabatan" },    
-            { "data": "creator" },    
+            { "data": "name_jabatan" },
+            { "data": "creator" },
             { "data": "created" },
             { "render": function (data, type, row, meta) {
                     if (row.status_jabatan == 1) {
@@ -110,7 +110,7 @@
                                     .wrap('<div></div>')
                                     .parent()
                                     .html();
-                    
+
                     var del = $('<button>')
                         .attr('class', "btn btn-danger waves-effect delete-menu")
                         .attr('onclick', "deletProcess('"+row.id_jabatan+"')")
@@ -133,7 +133,7 @@
                    'excel',
                    'csv',
                    'pdf',
-              
+
                ]
            }
        ]

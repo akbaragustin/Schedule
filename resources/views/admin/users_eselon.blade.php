@@ -17,33 +17,33 @@
 								<!-- PAGE CONTENT BEGINS -->
 								@if (!empty($id_user))
 								<form class="form-horizontal" role="form" action="{{url(route('users_eselon.update'))}}" method="POST" >
-								@else	
+								@else
 								<form class="form-horizontal" role="form" action="{{url(route('users_eselon.save'))}}" method="POST" >
 								@endif
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Name</label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Nama PIC</label>
 
 										<div class="col-sm-9">
-											<input type="text" id="form-field-1" name="name_pic" placeholder="name_pic" class="col-xs-10 col-sm-5" value="{{!empty($name_pic) ? $name_pic :''}}" />
+											<input type="text" id="form-field-1" name="name_pic" placeholder="Nama" class="col-xs-10 col-sm-5" value="{{!empty($name_pic) ? $name_pic :''}}" />
 										</div>
 									</div>
 
-									
+
 									<div class="space-4"></div>
 
-										
+
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-field-2">Unit Kerja</label>
 										<div class="col-sm-9">
 											<select name="id_unit_kerja">
-													<?php 
+													<?php
 													foreach ($unit_kerja as $key => $value) {
 														$selected ="";
 														if (!empty($id_unit_kerja)) {
-																if ($id_unit_kerja == $value['id_unit_kerja']) {	
+																if ($id_unit_kerja == $value['id_unit_kerja']) {
 																$selected ="selected";
 																}
-															
+
 														}
 														echo "<option value=".$value['id_unit_kerja']." ".$selected.">".$value['name_unit_kerja']."</option>";
 													}
@@ -83,7 +83,7 @@
 
 										<div class="clearfix">
 											<div class="pull-right tableTools-container"></div>
-										</div>				
+										</div>
 		                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable listTable">
 		                        <thead>
 		                            <tr>
@@ -97,9 +97,9 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div><!-- /.row -->
-		</div><!-- /.page-content -->	
+		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 
 	@section('js')
@@ -107,7 +107,7 @@
 	var urlAjaxTable = "{{ URL::to(route('users_eselon.indexAjax')) }}";
     var  urlEdit = "{{url('/admin/users_eselon-edit')}}";
     var  urlDelete = "{{url('/admin/users_eselon-delete')}}";
-    
+
     var listTable = $('.listTable').DataTable( {
         "processing": true,
         "bFilter": false,
@@ -122,7 +122,7 @@
             { "data": "name_pic" },
             { "data": "id_unit_kerja" },
             { "render": function (data, type, row, meta) {
-                    
+
                         var edit = $('<a><button>')
                                     .attr('class', "btn bg-blue-grey waves-effect edit-menu")
                                     .attr('href',urlEdit+'/'+row.id_user)
@@ -151,7 +151,7 @@
                    'excel',
                    'csv',
                    'pdf',
-              
+
                ]
            }
        ]
@@ -181,6 +181,6 @@
     }
 
 
-</script>	
+</script>
 	@endsection
 @stop

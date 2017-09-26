@@ -19,7 +19,7 @@ class homeController extends Controller
      * @return Response
      */
     public function index()
-    {   
+    {
         $status_jabatan = 2;
         $data['allJabatan'] = JB::where('status_jabatan',$status_jabatan)->get()->toArray();
         $data['allUser'] = json_encode(US::all());
@@ -29,9 +29,9 @@ class homeController extends Controller
     }
     public function indexAjax()
     {
-        $data['allData'] = RP::all();
+        $data['allData'] = RP::getHome();
         echo json_encode($data);
-     }    
+     }
       public function searchAjax()
     {
       $isiSearch =Input::get('q.term');
@@ -41,14 +41,14 @@ class homeController extends Controller
                 $json['id'] = $value->id_user;
                 $json['text'] = $value->username;
                 $list[] =$json;
-            }   
-       
+            }
+
         echo json_encode($list);
 
-     }    
-   
+     }
+
     public function saveAjax()
-    {   
+    {
 
         $rapat =new RP;
         $rapat->start_tgl_rapat =date("Y-m-d H:i:s",strtotime(Input::get('start_tgl_rapat')));
@@ -57,10 +57,10 @@ class homeController extends Controller
         $rapat->agenda_rapat =Input::get('agenda_rapat');
         $rapat->pj_rapat =Input::get('pj_rapat');
         $rapat->save();
-        
+
         $di_hadiri = Input::get('di_hadiri');
         $last_id = $rapat->id_rapat;
-            foreach ($di_hadiri as $key => $value) {      
+            foreach ($di_hadiri as $key => $value) {
             $schedule =new SC;
             $schedule ->id_rapat = $last_id;
             $schedule ->id_user = $value;
@@ -70,7 +70,7 @@ class homeController extends Controller
         return Response::json($result);
     }
       public function deleteAjax($id)
-    {   
+    {
 
         print_r ($id);die;
 

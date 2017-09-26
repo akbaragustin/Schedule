@@ -1,6 +1,6 @@
      @extends('layouts.index')
     @section('content')
-    
+
     <div class="main-content">
             <div class="main-content-inner">
                 <div class="page-header">
@@ -24,9 +24,9 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" id="form-field-1" placeholder="Name Menu" class="col-xs-10 col-sm-5" name="name_menu" value="{{!empty($name_menu) ? $name_menu : ''}}" />
-                                            
+
                                         </div>
-                                    </div>  
+                                    </div>
                                         <div class="form-group">
                                         <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Url/Link</label>
 
@@ -38,8 +38,8 @@
                                         <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Parent</label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" id="parent_menu_name" placeholder="Parent" class="col-xs-10 col-sm-5 openParent" name="parent_menu" value="{{!empty($parent_menu) ? $parent_menu : ''}}" />
-                                            <input type="hidden" id="parent_menu" placeholder="Parent" class="col-xs-10 col-sm-5 openParent" name="parent_menu" value="{{!empty($id_menu) ? $id_menu : ''}}" />
+                                            <input type="text" id="parent_menu_name" placeholder="Parent" class="col-xs-10 col-sm-5 openParent" name="parent_name" value="{{isset($parent_name) ? $parent_name : 'Root'}}" />
+                                            <input type="hidden" id="parent_menu" placeholder="Parent" class="col-xs-10 col-sm-5 openParent" name="parent_menu" value="{{isset($parent_menu) ? $parent_menu : ''}}" />
                                         </div>
                                     </div>
                                         <div class="form-group">
@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    
+
                                     <!-- <input type="submit" name="simpan"> -->
 
                                     <div class="clearfix form-actions">
@@ -61,7 +61,7 @@
                                                 <i class="ace-icon fa fa-check bigger-110"></i>
                                                 Edit
                                             </button>
-                                        @else 
+                                        @else
                                             <div class="col-md-offset-3 col-md-9">
                                             <button class="btn btn-info" type="submit">
                                                 <i class="ace-icon fa fa-check bigger-110"></i>
@@ -76,9 +76,9 @@
                                             </button>
                                         </div>
                                     </div>
-                            
+
                                 </form>
-                                  <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                  <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id ="myTable">
                                 <thead>
                                     <tr>
                                         <th>Menu</th>
@@ -89,20 +89,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php 
-                                   foreach ($dataMenu as $key => $value) {  
+                                <?php
+                                   foreach ($dataMenu as $key => $value) {
                                 ?>
                                     <tr>
                                         <td>{{$value->name_menu}}</td>
                                         <td>{{$value->url_menu}}</td>
                                         <td>{{$value->parent_menu}}</td>
-                                      
+
                                         <td><i class="material-icons">{{$value->icon_menu}}</i></td>
                                         <td>
                                             <a href="{{url('/admin/config/menu-edit')}}/{{$value->id_menu}}" class="btn bg-blue-grey waves-effect edit-menu">
                                                 EDIT
                                             </a>
-                                                
+
                                             <div class="btn btn-danger waves-effect delete-menu" onclick="deletProcess({{$value->id_menu}})">
                                                 DELETE
                                             </div>
@@ -113,31 +113,32 @@
                                     </tr>
 
 
-                                <?php 
+                                <?php
                                    }
-                                   
+
                                     ?>
-                                  
+
                                 </tbody>
                             </table>
                         </div>
                 </div>
             </div><!-- /.row -->
-        </div><!-- /.page-content -->   
+        </div><!-- /.page-content -->
     @section('js')
 <script type="text/javascript">
 var urlView = "{{url('/admin/config/menu-view')}}";
 var urlViewIcon = "{{url('/admin/config/menu-viewIcon')}}";
 var  urlDelete = "{{url('/admin/config/menu-delete')}}";
     $(".openParent").click(function(){
-        
+
         window.open(urlView,"","width=800px, height=500px");
     });
   $(".onIcon").click(function(){
-        
+
         window.open(urlViewIcon,"","width=800px, height=500px");
     });
-     
+    $('#myTable').DataTable();
+
   function deletProcess(id_menu){
     swal({
         title: "Apakah anda yakin ?",
